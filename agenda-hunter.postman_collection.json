@@ -1,0 +1,597 @@
+{
+	"info": {
+		"_postman_id": "a9b8c7d6-e5f4-4321-8765-432187654321",
+		"name": "Agenda Hunter API (JWT Auth)",
+		"description": "Colección completa para probar el dominio de Agenda Hunter con autenticación JWT.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080",
+			"type": "string"
+		},
+		{
+			"key": "jwtToken",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "practicanteId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "recordatorioId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "tareaEnfoqueId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "rutinaId",
+			"value": "",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "1. Autenticación (JWT)",
+			"item": [
+				{
+					"name": "Registro de Practicante",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"if (jsonData.token) {",
+									"    pm.collectionVariables.set('jwtToken', jsonData.token);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nombre\": \"Emerson\",\n  \"email\": \"emerson@test.com\",\n  \"password\": \"123456\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/registro",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"registro"
+							]
+						}
+					}
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"if (jsonData.token) {",
+									"    pm.collectionVariables.set('jwtToken', jsonData.token);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"emerson@test.com\",\n  \"password\": \"123456\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "2. Practicante",
+			"item": [
+				{
+					"name": "Limpiar Maleza",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwtToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/practicantes/{{practicanteId}}/limpiar-maleza",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"practicantes",
+								"{{practicanteId}}",
+								"limpiar-maleza"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "3. Recordatorios",
+			"item": [
+				{
+					"name": "Crear Recordatorio",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwtToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"practicanteId\": \"{{practicanteId}}\",\n  \"titulo\": \"Comprar café\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/recordatorios",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"recordatorios"
+							]
+						}
+					}
+				},
+				{
+					"name": "Completar Recordatorio",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwtToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/recordatorios/{{recordatorioId}}/completar",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"recordatorios",
+								"{{recordatorioId}}",
+								"completar"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "4. Tareas de Enfoque (Deep Work)",
+			"item": [
+				{
+					"name": "Crear Tarea de Enfoque",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwtToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"practicanteId\": \"{{practicanteId}}\",\n  \"titulo\": \"Programar módulo de arquitectura\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/tareas-enfoque",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"tareas-enfoque"
+							]
+						}
+					}
+				},
+				{
+					"name": "Iniciar Ciclo (Pomodoro)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwtToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/tareas-enfoque/{{tareaEnfoqueId}}/iniciar-ciclo",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"tareas-enfoque",
+								"{{tareaEnfoqueId}}",
+								"iniciar-ciclo"
+							]
+						}
+					}
+				},
+				{
+					"name": "Completar Ciclo",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwtToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/tareas-enfoque/{{tareaEnfoqueId}}/completar-ciclo",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"tareas-enfoque",
+								"{{tareaEnfoqueId}}",
+								"completar-ciclo"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "5. Rutinas Diarias (Daily Quests)",
+			"item": [
+				{
+					"name": "Crear Rutina Diaria",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwtToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"practicanteId\": \"{{practicanteId}}\",\n  \"titulo\": \"Hacer flexiones\",\n  \"seriesTotales\": 3\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/rutinas",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"rutinas"
+							]
+						}
+					}
+				},
+				{
+					"name": "Marcar Serie Completada",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwtToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/rutinas/{{rutinaId}}/marcar-serie",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"rutinas",
+								"{{rutinaId}}",
+								"marcar-serie"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "6. Planificación (Calendario de Siembra)",
+			"item": [
+				{
+					"name": "Planificar Recordatorio",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwtToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"practicanteId\": \"{{practicanteId}}\",\n  \"itemId\": \"{{recordatorioId}}\",\n  \"fecha\": \"2026-08-05\",\n  \"faseDia\": \"MAÑANA\",\n  \"horaProgramada\": \"09:00\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/planificacion/recordatorio",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"planificacion",
+								"recordatorio"
+							]
+						}
+					}
+				},
+				{
+					"name": "Planificar Enfoque",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwtToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"practicanteId\": \"{{practicanteId}}\",\n  \"itemId\": \"{{tareaEnfoqueId}}\",\n  \"fecha\": \"2026-08-05\",\n  \"faseDia\": \"TARDE\",\n  \"horaProgramada\": \"14:00\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/planificacion/enfoque",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"planificacion",
+								"enfoque"
+							]
+						}
+					}
+				},
+				{
+					"name": "Planificar Rutina",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwtToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"practicanteId\": \"{{practicanteId}}\",\n  \"itemId\": \"{{rutinaId}}\",\n  \"fecha\": \"2026-08-05\",\n  \"faseDia\": \"NOCHE\",\n  \"horaProgramada\": \"20:00\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/planificacion/rutina",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"planificacion",
+								"rutina"
+							]
+						}
+					}
+				},
+				{
+					"name": "Obtener Agenda del Día",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwtToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/planificacion/agenda/{{practicanteId}}/2026-08-05",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"planificacion",
+								"agenda",
+								"{{practicanteId}}",
+								"2026-08-05"
+							]
+						}
+					}
+				},
+				{
+					"name": "Cerrar Día",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwtToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"practicanteId\": \"{{practicanteId}}\",\n  \"fecha\": \"2026-08-05\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/planificacion/cerrar-dia",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"planificacion",
+								"cerrar-dia"
+							]
+						}
+					}
+				}
+			]
+		}
+	]
+}

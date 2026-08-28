@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: agendahunter
+  
+  datasource:
+    url: jdbc:postgresql://localhost:5432/agenda_hunter
+    username: hunter
+    password: hunter_password
+    driver-class-name: org.postgresql.Driver
+    
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  flyway:
+    enabled: true
+    clean-on-validation-error: true
+
+jwt:
+  secret: 3cfa76ef14937c1c0ea519f8fc057a80fcd04a7420f8e8bcd0a75678eb178bcf
+  access-token-expiration: 900000
+  refresh-token-expiration: 604800000
