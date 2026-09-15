@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.UUID;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
 import com.emersondev.agendahunter.domain.repository.CalendarioSiembraRepository;
 import com.emersondev.agendahunter.domain.model.CalendarioSiembra;
 
@@ -25,60 +25,32 @@ public class PlanificacionController {
     private final CerrarDiaUseCase cerrarDiaUseCase;
     private final CalendarioSiembraRepository calendarioSiembraRepository;
 
-    public static class PlanificarReq {
-        public UUID practicanteId;
-        public UUID itemId;
-        public LocalDate fecha;
-        public String faseDia;
-        public String horaProgramada;
-    }
-
     @PostMapping("/recordatorio")
-    public ResponseEntity<Void> planificarRecordatorio(@RequestBody PlanificarReq req) {
-        planificarRecordatorioUseCase.ejecutar(req.practicanteId, req.itemId, req.fecha, req.faseDia, req.horaProgramada);
+    public ResponseEntity<Void> planificarRecordatorio(@RequestBody PlanificarRequest req) {
+        planificarRecordatorioUseCase.ejecutar(req.getPracticanteId(), req.getItemId(), req.getFecha(), req.getFaseDia(), req.getHoraProgramada());
         return ResponseEntity.ok().build();
     }
     
     @PostMapping("/enfoque")
-    public ResponseEntity<Void> planificarEnfoque(@RequestBody PlanificarReq req) {
-        planificarTareaEnfoqueUseCase.ejecutar(req.practicanteId, req.itemId, req.fecha, req.faseDia, req.horaProgramada);
+    public ResponseEntity<Void> planificarEnfoque(@RequestBody PlanificarRequest req) {
+        planificarTareaEnfoqueUseCase.ejecutar(req.getPracticanteId(), req.getItemId(), req.getFecha(), req.getFaseDia(), req.getHoraProgramada());
         return ResponseEntity.ok().build();
     }
     
     @PostMapping("/rutina")
-    public ResponseEntity<Void> planificarRutina(@RequestBody PlanificarReq req) {
-        planificarRutinaDiariaUseCase.ejecutar(req.practicanteId, req.itemId, req.fecha, req.faseDia, req.horaProgramada);
+    public ResponseEntity<Void> planificarRutina(@RequestBody PlanificarRequest req) {
+        planificarRutinaDiariaUseCase.ejecutar(req.getPracticanteId(), req.getItemId(), req.getFecha(), req.getFaseDia(), req.getHoraProgramada());
         return ResponseEntity.ok().build();
-    }
-
-    public static class CerrarDiaReq {
-        public UUID practicanteId;
-        public LocalDate fecha;
     }
 
     @PostMapping("/cerrar-dia")
-    public ResponseEntity<Void> cerrarDia(@RequestBody CerrarDiaReq req) {
-        cerrarDiaUseCase.ejecutar(req.practicanteId, req.fecha);
+    public ResponseEntity<Void> cerrarDia(@RequestBody CerrarDiaRequest req) {
+        cerrarDiaUseCase.ejecutar(req.getPracticanteId(), req.getFecha());
         return ResponseEntity.ok().build();
     }
 
-    public static class AgendaItemDto {
-        public UUID id;
-        public String titulo;
-        public String tipo; // "RECORDATORIO", "ENFOQUE", "RUTINA"
-        public boolean completado;
-        public String faseDia;
-        public String horaProgramada;
-    }
-
-    public static class AgendaDto {
-        public UUID practicanteId;
-        public LocalDate fecha;
-        public List<AgendaItemDto> items;
-    }
-
     @GetMapping("/agenda/{practicanteId}/{fecha}")
-    public ResponseEntity<AgendaDto> obtenerAgenda(
+    public ResponseEntity<AgendaDTO> obtenerAgenda(
             @PathVariable UUID practicanteId,
             @PathVariable LocalDate fecha) {
             
@@ -90,42 +62,42 @@ public class PlanificacionController {
             return ResponseEntity.notFound().build();
         }
 
-        AgendaDto dto = new AgendaDto();
-        dto.practicanteId = practicanteId;
-        dto.fecha = fecha;
-        dto.items = new java.util.ArrayList<>();
+        AgendaDTO dto = new AgendaDTO();
+        dto.setPracticanteId(practicanteId);
+        dto.setFecha(fecha);
+        dto.setItems(new ArrayList<>());
 
         planificacion.getRecordatorios().forEach(r -> {
-            AgendaItemDto item = new AgendaItemDto();
-            item.id = r.getId();
-            item.titulo = r.getTitulo();
-            item.tipo = "RECORDATORIO";
-            item.completado = r.isCompletado();
-            item.faseDia = r.getFaseDia();
-            item.horaProgramada = r.getHoraProgramada();
-            dto.items.add(item);
+            AgendaItemDTO item = new AgendaItemDTO();
+            item.setId(r.getId());
+            item.setTitulo(r.getTitulo());
+            item.setTipo("RECORDATORIO");
+            item.setCompletado(r.isCompletado());
+            item.setFaseDia(r.getFaseDia());
+            item.setHoraProgramada(r.getHoraProgramada());
+            dto.getItems().add(item);
         });
 
         planificacion.getTareasEnfoque().forEach(t -> {
-            AgendaItemDto item = new AgendaItemDto();
-            item.id = t.getId();
-            item.titulo = t.getTitulo();
-            item.tipo = "ENFOQUE";
-            item.completado = t.isCompletado();
-            item.faseDia = t.getFaseDia();
-            item.horaProgramada = t.getHoraProgramada();
-            dto.items.add(item);
+            AgendaItemDTO item = new AgendaItemDTO();
+            item.setId(t.getId());
+            item.setTitulo(t.getTitulo());
+            item.setTipo("ENFOQUE");
+            item.setCompletado(t.isCompletado());
+            item.setFaseDia(t.getFaseDia());
+            item.setHoraProgramada(t.getHoraProgramada());
+            dto.getItems().add(item);
         });
 
         planificacion.getRutinasDiarias().forEach(r -> {
-            AgendaItemDto item = new AgendaItemDto();
-            item.id = r.getId();
-            item.titulo = r.getTitulo();
-            item.tipo = "RUTINA";
-            item.completado = (r.getSeriesCompletadas() >= r.getSeriesTotales());
-            item.faseDia = r.getFaseDia();
-            item.horaProgramada = r.getHoraProgramada();
-            dto.items.add(item);
+            AgendaItemDTO item = new AgendaItemDTO();
+            item.setId(r.getId());
+            item.setTitulo(r.getTitulo());
+            item.setTipo("RUTINA");
+            item.setCompletado(r.getSeriesCompletadas() >= r.getSeriesTotales());
+            item.setFaseDia(r.getFaseDia());
+            item.setHoraProgramada(r.getHoraProgramada());
+            dto.getItems().add(item);
         });
 
         return ResponseEntity.ok(dto);

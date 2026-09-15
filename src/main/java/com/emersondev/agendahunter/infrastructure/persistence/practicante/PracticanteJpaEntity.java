@@ -27,10 +27,5 @@ public class PracticanteJpaEntity {
     private String nombre;
     private String email;
     private String password;
-    private int nivel;
-    private int experiencia;
-    private int racha;
-    private int armonia;
-    private int maleza;
     private String zonaHoraria;
 }

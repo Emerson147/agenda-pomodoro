@@ -33,7 +33,7 @@ public class PlanificacionRepositoryAdapter implements CalendarioSiembraReposito
             
         List<TareaEnfoqueJpaEntity> enfoquesJpa = planificacion.getTareasEnfoque().stream()
             .map(t -> new TareaEnfoqueJpaEntity(t.getId(), t.getPracticanteId(), t.getTitulo(), t.isCompletado(),
-                t.getCiclos().stream().map(c -> new CicloEnfoqueJpaEntity(c.getId(), c.getHoraInicio(), c.getHoraFin(), c.getEstado())).collect(Collectors.toList()),
+                t.getCiclos().stream().map(c -> new CicloEnfoqueJpaEntity(c.getId(), c.getHoraInicio(), c.getHoraFin(), c.getEstado(), c.getDuracionMinutos(), c.getTipo())).collect(Collectors.toList()),
                 t.getFaseDia(), t.getHoraProgramada()
             )).collect(Collectors.toList());
             
@@ -64,11 +64,7 @@ public class PlanificacionRepositoryAdapter implements CalendarioSiembraReposito
                     List<TareaEnfoque> enfoques = entity.getTareasEnfoque().stream()
                         .map(t -> {
                             List<CicloEnfoque> ciclos = t.getCiclos().stream().map(c -> {
-                                CicloEnfoque ciclo = new CicloEnfoque();
-                                ciclo.setId(c.getId());
-                                ciclo.setHoraInicio(c.getHoraInicio());
-                                ciclo.setHoraFin(c.getHoraFin());
-                                ciclo.setEstado(c.getEstado());
+                                CicloEnfoque ciclo = new CicloEnfoque(c.getId(), c.getHoraInicio(), c.getHoraFin(), c.getEstado(), c.getDuracionMinutos(), c.getTipo());
                                 return ciclo;
                             }).collect(Collectors.toList());
                             return new TareaEnfoque(t.getId(), t.getPracticanteId(), t.getTitulo(), t.isCompletado(), ciclos, t.getFaseDia(), t.getHoraProgramada());
@@ -100,11 +96,7 @@ public class PlanificacionRepositoryAdapter implements CalendarioSiembraReposito
                     List<TareaEnfoque> enfoques = entity.getTareasEnfoque().stream()
                         .map(t -> {
                             List<CicloEnfoque> ciclos = t.getCiclos().stream().map(c -> {
-                                CicloEnfoque ciclo = new CicloEnfoque();
-                                ciclo.setId(c.getId());
-                                ciclo.setHoraInicio(c.getHoraInicio());
-                                ciclo.setHoraFin(c.getHoraFin());
-                                ciclo.setEstado(c.getEstado());
+                                CicloEnfoque ciclo = new CicloEnfoque(c.getId(), c.getHoraInicio(), c.getHoraFin(), c.getEstado(), c.getDuracionMinutos(), c.getTipo());
                                 return ciclo;
                             }).collect(Collectors.toList());
                             return new TareaEnfoque(t.getId(), t.getPracticanteId(), t.getTitulo(), t.isCompletado(), ciclos, t.getFaseDia(), t.getHoraProgramada());

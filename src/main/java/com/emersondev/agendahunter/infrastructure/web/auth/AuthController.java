@@ -23,7 +23,7 @@ public class AuthController {
         log.info("REST request - Registro de nuevo usuario");
         return ResponseEntity.ok(authService.register(request));
     }
-`
+
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(
             @Valid @RequestBody LoginRequest request

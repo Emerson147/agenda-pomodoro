@@ -13,11 +13,10 @@ public class RutinaDiariaController {
     private final CrearRutinaDiariaUseCase crearUseCase;
     private final MarcarSerieCompletadaUseCase marcarUseCase;
 
-    public static class CrearReq { public UUID practicanteId; public String titulo; public int seriesTotales; }
 
     @PostMapping
-    public ResponseEntity<?> crear(@RequestBody CrearReq req) {
-        return ResponseEntity.ok(crearUseCase.ejecutar(req.practicanteId, req.titulo, req.seriesTotales));
+    public ResponseEntity<?> crear(@RequestBody CrearRutinaDiariaRequest req) {
+        return ResponseEntity.ok(crearUseCase.ejecutar(req.getPracticanteId(), req.getTitulo(), req.getSeriesTotales()));
     }
 
     @PostMapping("/{id}/marcar-serie")

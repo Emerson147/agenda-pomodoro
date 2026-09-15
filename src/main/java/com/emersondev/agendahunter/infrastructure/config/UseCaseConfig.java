@@ -1,7 +1,7 @@
 package com.emersondev.agendahunter.infrastructure.config;
 
+import com.emersondev.agendahunter.application.usecase.idea.*;
 import com.emersondev.agendahunter.application.usecase.practicante.ObtenerPerfilUseCase;
-import com.emersondev.agendahunter.application.usecase.practicante.LimpiarMalezaUseCase;
 import com.emersondev.agendahunter.application.usecase.planificacion.*;
 import com.emersondev.agendahunter.application.usecase.recordatorio.*;
 import com.emersondev.agendahunter.application.usecase.rutinadiaria.*;
@@ -13,14 +13,25 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class UseCaseConfig {
 
+    // Idea Use Cases
     @Bean
-    public ObtenerPerfilUseCase obtenerPerfilUseCase(PracticanteRepository practicanteRepository) {
-        return new ObtenerPerfilUseCase(practicanteRepository);
+    public CapturarIdeaUseCase capturarIdeaUseCase(IdeaRepository ideaRepository) {
+        return new CapturarIdeaUseCase(ideaRepository);
     }
 
     @Bean
-    public LimpiarMalezaUseCase limpiarMalezaUseCase(PracticanteRepository practicanteRepository) {
-        return new LimpiarMalezaUseCase(practicanteRepository);
+    public ListarIdeasPendientesUseCase listarIdeasPendientesUseCase(IdeaRepository ideaRepository) {
+        return new ListarIdeasPendientesUseCase(ideaRepository);
+    }
+
+    @Bean
+    public ProcesarIdeaUseCase procesarIdeaUseCase(IdeaRepository ideaRepository) {
+        return new ProcesarIdeaUseCase(ideaRepository);
+    }
+
+    @Bean
+    public ObtenerPerfilUseCase obtenerPerfilUseCase(PracticanteRepository practicanteRepository) {
+        return new ObtenerPerfilUseCase(practicanteRepository);
     }
 
     // Recordatorio Use Cases
@@ -30,8 +41,8 @@ public class UseCaseConfig {
     }
 
     @Bean
-    public CompletarRecordatorioUseCase completarRecordatorioUseCase(RecordatorioRepository repo, PracticanteRepository practicanteRepo) {
-        return new CompletarRecordatorioUseCase(repo, practicanteRepo);
+    public CompletarRecordatorioUseCase completarRecordatorioUseCase(RecordatorioRepository repo) {
+        return new CompletarRecordatorioUseCase(repo);
     }
 
     // TareaEnfoque Use Cases
@@ -46,8 +57,8 @@ public class UseCaseConfig {
     }
 
     @Bean
-    public CompletarCicloActualUseCase completarCicloActualUseCase(TareaEnfoqueRepository repo, PracticanteRepository practicanteRepo) {
-        return new CompletarCicloActualUseCase(repo, practicanteRepo);
+    public CompletarCicloActualUseCase completarCicloActualUseCase(TareaEnfoqueRepository repo) {
+        return new CompletarCicloActualUseCase(repo);
     }
 
     // RutinaDiaria Use Cases
@@ -72,9 +83,8 @@ public class UseCaseConfig {
     @Bean
     public PlanificarTareaEnfoqueUseCase planificarTareaEnfoqueUseCase(
             TareaEnfoqueRepository enfoqueRepo,
-            CalendarioSiembraRepository calendarioRepo,
-            PracticanteRepository practicanteRepo) {
-        return new PlanificarTareaEnfoqueUseCase(enfoqueRepo, calendarioRepo, practicanteRepo);
+            CalendarioSiembraRepository calendarioRepo) {
+        return new PlanificarTareaEnfoqueUseCase(enfoqueRepo, calendarioRepo);
     }
 
     @Bean
@@ -86,9 +96,8 @@ public class UseCaseConfig {
 
     @Bean
     public CerrarDiaUseCase cerrarDiaUseCase(
-            CalendarioSiembraRepository calendarioRepo, 
-            PracticanteRepository practicanteRepo) {
-        return new CerrarDiaUseCase(calendarioRepo, practicanteRepo);
+            CalendarioSiembraRepository calendarioRepo) {
+        return new CerrarDiaUseCase(calendarioRepo);
     }
 
     @Bean

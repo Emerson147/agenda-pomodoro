@@ -28,8 +28,8 @@ public class TareaEnfoque {
         this.horaProgramada = horaProgramada;
     }
     
-    public void iniciarCiclo() {
-        this.ciclos.add(new CicloEnfoque());
+    public void iniciarCiclo(int duracionMinutos, TipoCiclo tipo) {
+        this.ciclos.add(new CicloEnfoque(duracionMinutos, tipo));
     }
     
     public void completarCicloActual() {
@@ -40,8 +40,8 @@ public class TareaEnfoque {
         if (cicloActual.getEstado() != EstadoCiclo.EN_CURSO) {
             throw new DomainException("El ciclo actual no está en curso.");
         }
-        if (LocalDateTime.now().isBefore(cicloActual.getHoraInicio().plusMinutes(25))) {
-            throw new DomainException("Deben pasar al menos 25 minutos desde el inicio del ciclo.");
+        if (LocalDateTime.now().isBefore(cicloActual.getHoraInicio().plusMinutes(cicloActual.getDuracionMinutos()))) {
+            throw new DomainException("Deben pasar al menos " + cicloActual.getDuracionMinutos() + " minutos desde el inicio del ciclo.");
         }
         cicloActual.setEstado(EstadoCiclo.COMPLETADO);
         cicloActual.setHoraFin(LocalDateTime.now());

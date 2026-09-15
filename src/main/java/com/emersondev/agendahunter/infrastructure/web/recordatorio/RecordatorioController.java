@@ -13,11 +13,10 @@ public class RecordatorioController {
     private final CrearRecordatorioUseCase crearUseCase;
     private final CompletarRecordatorioUseCase completarUseCase;
 
-    public static class CrearReq { public UUID practicanteId; public String titulo; }
 
     @PostMapping
-    public ResponseEntity<?> crear(@RequestBody CrearReq req) {
-        return ResponseEntity.ok(crearUseCase.ejecutar(req.practicanteId, req.titulo));
+    public ResponseEntity<?> crear(@RequestBody CrearRecordatorioRequest req) {
+        return ResponseEntity.ok(crearUseCase.ejecutar(req.getPracticanteId(), req.getTitulo()));
     }
 
     @PostMapping("/{id}/completar")

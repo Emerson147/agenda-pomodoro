@@ -1,6 +1,5 @@
 package com.emersondev.agendahunter.infrastructure.web.practicante;
 
-import com.emersondev.agendahunter.application.usecase.practicante.LimpiarMalezaUseCase;
 import com.emersondev.agendahunter.application.usecase.practicante.ObtenerPerfilUseCase;
 import com.emersondev.agendahunter.domain.model.Practicante;
 import com.emersondev.agendahunter.infrastructure.web.auth.PracticanteDTO;
@@ -27,7 +26,6 @@ import java.util.UUID;
 public class PracticanteController {
 
     private final ObtenerPerfilUseCase obtenerPerfilUseCase;
-    private final LimpiarMalezaUseCase limpiarMalezaUseCase;
 
     @GetMapping("/me")
     public ResponseEntity<PracticanteDTO> obtenerMiPerfil(Authentication authentication) {
@@ -37,15 +35,6 @@ public class PracticanteController {
         Practicante practicante = obtenerPerfilUseCase.ejecutar(practicanteId);
         
         return ResponseEntity.ok(PracticanteDTO.from(practicante));
-    }
-
-    @PostMapping("/me/limpiar-maleza")
-    public ResponseEntity<Void> limpiarMaleza(Authentication authentication) {
-        UUID practicanteId = extraerId(authentication);
-        log.info("Petición para limpiar maleza del practicante: {}", practicanteId);
-        
-        limpiarMalezaUseCase.ejecutar(practicanteId);
-        return ResponseEntity.ok().build();
     }
     
     private UUID extraerId(Authentication authentication) {

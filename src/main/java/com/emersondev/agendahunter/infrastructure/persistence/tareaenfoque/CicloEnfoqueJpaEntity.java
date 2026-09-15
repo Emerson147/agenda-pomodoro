@@ -21,4 +21,10 @@ public class CicloEnfoqueJpaEntity {
     private LocalDateTime horaFin;
     @Enumerated(EnumType.STRING)
     private EstadoCiclo estado;
+    
+    @Column(name = "duracion_minutos")
+    private int duracionMinutos;
+    
+    @Enumerated(EnumType.STRING)
+    private com.emersondev.agendahunter.domain.model.TipoCiclo tipo;
 }

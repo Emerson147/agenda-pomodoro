@@ -27,11 +27,6 @@ public class PracticanteRepositoryAdapter implements PracticanteRepository {
                 practicante.getNombre(),
                 practicante.getEmail(),
                 practicante.getPassword(),
-                practicante.getNivel(),
-                practicante.getExperiencia(),
-                practicante.getRacha(),
-                practicante.getArmonia(),
-                practicante.getMaleza(),
                 practicante.getZonaHoraria()
         );
 
@@ -49,11 +44,6 @@ public class PracticanteRepositoryAdapter implements PracticanteRepository {
                         entity.getNombre(),
                         entity.getEmail(),
                         entity.getPassword(),
-                        entity.getNivel(),
-                        entity.getExperiencia(),
-                        entity.getRacha(),
-                        entity.getArmonia(),
-                        entity.getMaleza(),
                         entity.getZonaHoraria()
                 ));
     }
@@ -66,11 +56,6 @@ public class PracticanteRepositoryAdapter implements PracticanteRepository {
                         entity.getNombre(),
                         entity.getEmail(),
                         entity.getPassword(),
-                        entity.getNivel(),
-                        entity.getExperiencia(),
-                        entity.getRacha(),
-                        entity.getArmonia(),
-                        entity.getMaleza(),
                         entity.getZonaHoraria()
                 ));
     }

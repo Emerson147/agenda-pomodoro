@@ -5,12 +5,12 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/agenda_hunter
     username: hunter
-    password: hunter_password
+    password: hunter
     driver-class-name: org.postgresql.Driver
     
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate:

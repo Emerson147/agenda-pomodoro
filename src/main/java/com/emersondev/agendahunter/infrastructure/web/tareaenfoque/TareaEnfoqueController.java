@@ -13,16 +13,24 @@ public class TareaEnfoqueController {
     private final IniciarCicloUseCase iniciarUseCase;
     private final CompletarCicloActualUseCase completarUseCase;
 
-    public static class CrearReq { public UUID practicanteId; public String titulo; }
 
     @PostMapping
-    public ResponseEntity<?> crear(@RequestBody CrearReq req) {
-        return ResponseEntity.ok(crearUseCase.ejecutar(req.practicanteId, req.titulo));
+    public ResponseEntity<?> crear(@RequestBody CrearTareaEnfoqueRequest req) {
+        return ResponseEntity.ok(crearUseCase.ejecutar(req.getPracticanteId(), req.getTitulo()));
     }
 
+
     @PostMapping("/{id}/iniciar-ciclo")
-    public ResponseEntity<Void> iniciarCiclo(@PathVariable UUID id) {
-        iniciarUseCase.ejecutar(id);
+    public ResponseEntity<Void> iniciarCiclo(@PathVariable UUID id, @RequestBody(required = false) IniciarCicloRequest req) {
+        int duracion = (req != null && req.getDuracionMinutos() > 0) ? req.getDuracionMinutos() : 25;
+        com.emersondev.agendahunter.domain.model.TipoCiclo tipoEnum = com.emersondev.agendahunter.domain.model.TipoCiclo.ENFOQUE;
+        if (req != null && req.getTipo() != null) {
+            try {
+                tipoEnum = com.emersondev.agendahunter.domain.model.TipoCiclo.valueOf(req.getTipo().toUpperCase());
+            } catch (IllegalArgumentException ignored) {}
+        }
+        
+        iniciarUseCase.ejecutar(id, duracion, tipoEnum);
         return ResponseEntity.ok().build();
     }
 
