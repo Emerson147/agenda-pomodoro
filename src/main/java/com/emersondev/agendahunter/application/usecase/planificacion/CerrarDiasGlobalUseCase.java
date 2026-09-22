@@ -19,7 +19,7 @@ public class CerrarDiasGlobalUseCase {
 
         for (CalendarioSiembra calendario : calendariosHoy) {
             try {
-                cerrarDiaUseCase.ejecutar(calendario.getPracticanteId(), hoy);
+                cerrarDiaUseCase.ejecutar(calendario.getPracticanteId(), hoy, new java.util.ArrayList<>());
             } catch (Exception e) {
                 // Continuar con los demás
             }

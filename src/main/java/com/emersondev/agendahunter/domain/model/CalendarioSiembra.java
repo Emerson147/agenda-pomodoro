@@ -8,13 +8,15 @@ import java.util.List;
 import java.util.UUID;
 
 @Getter
-public class    CalendarioSiembra {
+public class CalendarioSiembra {
     private UUID id;
     private UUID practicanteId;
     private LocalDate fecha;
     private List<Recordatorio> recordatorios;
     private List<TareaEnfoque> tareasEnfoque;
     private List<RutinaDiaria> rutinasDiarias;
+    private List<Reflexion> reflexiones;
+    private boolean diaCerrado;
 
     public CalendarioSiembra(UUID practicanteId, LocalDate fecha) {
         if (practicanteId == null) throw new IllegalArgumentException("El practicanteId es obligatorio");
@@ -26,18 +28,28 @@ public class    CalendarioSiembra {
         this.recordatorios = new ArrayList<>();
         this.tareasEnfoque = new ArrayList<>();
         this.rutinasDiarias = new ArrayList<>();
+        this.reflexiones = new ArrayList<>();
+        this.diaCerrado = false;
     }
 
     public CalendarioSiembra(UUID id, UUID practicanteId, LocalDate fecha, 
                              List<Recordatorio> recordatorios, 
                              List<TareaEnfoque> tareasEnfoque, 
-                             List<RutinaDiaria> rutinasDiarias) {
+                             List<RutinaDiaria> rutinasDiarias,
+                             List<Reflexion> reflexiones,
+                             boolean diaCerrado) {
         this.id = id;
         this.practicanteId = practicanteId;
         this.fecha = fecha;
         this.recordatorios = recordatorios != null ? recordatorios : new ArrayList<>();
         this.tareasEnfoque = tareasEnfoque != null ? tareasEnfoque : new ArrayList<>();
         this.rutinasDiarias = rutinasDiarias != null ? rutinasDiarias : new ArrayList<>();
+        this.reflexiones = reflexiones != null ? reflexiones : new ArrayList<>();
+        this.diaCerrado = diaCerrado;
+    }
+
+    public static CalendarioSiembra crear(UUID practicanteId, LocalDate fecha) {
+        return new CalendarioSiembra(UUID.randomUUID(), practicanteId, fecha, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), false);
     }
 
     public void agregarRecordatorio(Recordatorio recordatorio) {
@@ -68,5 +80,15 @@ public class    CalendarioSiembra {
             throw new DomainException("La rutina no pertenece a este practicante.");
         }
         this.rutinasDiarias.add(rutina);
+    }
+
+    public void cerrarDia(List<Reflexion> reflexiones) {
+        if (this.diaCerrado) {
+            throw new DomainException("Este día ya se encuentra cerrado.");
+        }
+        if (reflexiones != null) {
+            this.reflexiones.addAll(reflexiones);
+        }
+        this.diaCerrado = true;
     }
 }

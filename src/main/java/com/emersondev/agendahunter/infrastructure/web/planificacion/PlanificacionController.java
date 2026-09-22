@@ -4,6 +4,7 @@ import com.emersondev.agendahunter.application.usecase.planificacion.PlanificarR
 import com.emersondev.agendahunter.application.usecase.planificacion.PlanificarTareaEnfoqueUseCase;
 import com.emersondev.agendahunter.application.usecase.planificacion.PlanificarRutinaDiariaUseCase;
 import com.emersondev.agendahunter.application.usecase.planificacion.CerrarDiaUseCase;
+import com.emersondev.agendahunter.application.usecase.planificacion.ObtenerPreguntasCierreUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,8 +13,10 @@ import java.time.LocalDate;
 import java.util.UUID;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 import com.emersondev.agendahunter.domain.repository.CalendarioSiembraRepository;
 import com.emersondev.agendahunter.domain.model.CalendarioSiembra;
+import com.emersondev.agendahunter.domain.model.Reflexion;
 
 @RestController
 @RequestMapping("/api/v1/planificacion")
@@ -23,7 +26,13 @@ public class PlanificacionController {
     private final PlanificarTareaEnfoqueUseCase planificarTareaEnfoqueUseCase;
     private final PlanificarRutinaDiariaUseCase planificarRutinaDiariaUseCase;
     private final CerrarDiaUseCase cerrarDiaUseCase;
+    private final ObtenerPreguntasCierreUseCase obtenerPreguntasCierreUseCase;
     private final CalendarioSiembraRepository calendarioSiembraRepository;
+
+    @GetMapping("/preguntas-cierre")
+    public ResponseEntity<List<String>> obtenerPreguntasCierre() {
+        return ResponseEntity.ok(obtenerPreguntasCierreUseCase.ejecutar());
+    }
 
     @PostMapping("/recordatorio")
     public ResponseEntity<Void> planificarRecordatorio(@RequestBody PlanificarRequest req) {
@@ -45,7 +54,13 @@ public class PlanificacionController {
 
     @PostMapping("/cerrar-dia")
     public ResponseEntity<Void> cerrarDia(@RequestBody CerrarDiaRequest req) {
-        cerrarDiaUseCase.ejecutar(req.getPracticanteId(), req.getFecha());
+        List<Reflexion> reflexiones = req.getReflexiones() != null ? 
+            req.getReflexiones().stream()
+                .map(dto -> new Reflexion(dto.getPregunta(), dto.getRespuesta()))
+                .collect(Collectors.toList()) 
+            : new ArrayList<>();
+            
+        cerrarDiaUseCase.ejecutar(req.getPracticanteId(), req.getFecha(), reflexiones);
         return ResponseEntity.ok().build();
     }
 
@@ -86,6 +101,14 @@ public class PlanificacionController {
             item.setCompletado(t.isCompletado());
             item.setFaseDia(t.getFaseDia());
             item.setHoraProgramada(t.getHoraProgramada());
+            item.setPomodorosEstimados(t.getPomodorosEstimados());
+            
+            long reales = t.getCiclos().stream()
+                .filter(c -> c.getTipo() == com.emersondev.agendahunter.domain.model.TipoCiclo.ENFOQUE && 
+                             c.getEstado() == com.emersondev.agendahunter.domain.model.EstadoCiclo.COMPLETADO)
+                .count();
+            item.setPomodorosReales((int) reales);
+            
             dto.getItems().add(item);
         });
 

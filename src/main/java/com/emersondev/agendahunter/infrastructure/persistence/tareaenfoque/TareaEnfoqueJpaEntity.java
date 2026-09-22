@@ -20,6 +20,9 @@ public class TareaEnfoqueJpaEntity {
     private String titulo;
     private boolean completado;
     
+    @Column(name = "pomodoros_estimados", nullable = false, columnDefinition = "integer default 1")
+    private int pomodorosEstimados = 1;
+    
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "tarea_enfoque_id")
     private List<CicloEnfoqueJpaEntity> ciclos;

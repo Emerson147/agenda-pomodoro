@@ -20,6 +20,7 @@ public class TareaEnfoqueRepositoryAdapter implements TareaEnfoqueRepository {
             tarea.getPracticanteId(),
             tarea.getTitulo(),
             tarea.isCompletado(),
+            tarea.getPomodorosEstimados(),
             tarea.getCiclos().stream().map(c -> new CicloEnfoqueJpaEntity(
                 c.getId(), c.getHoraInicio(), c.getHoraFin(), c.getEstado(), c.getDuracionMinutos(), c.getTipo()
             )).collect(Collectors.toList()),
@@ -38,7 +39,7 @@ public class TareaEnfoqueRepositoryAdapter implements TareaEnfoqueRepository {
                 );
                 return ciclo;
             }).collect(Collectors.toList());
-            return new TareaEnfoque(entity.getId(), entity.getPracticanteId(), entity.getTitulo(), entity.isCompletado(), ciclos, entity.getFaseDia(), entity.getHoraProgramada());
+            return new TareaEnfoque(entity.getId(), entity.getPracticanteId(), entity.getTitulo(), entity.isCompletado(), entity.getPomodorosEstimados(), ciclos, entity.getFaseDia(), entity.getHoraProgramada());
         });
     }
 }

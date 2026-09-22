@@ -5,4 +5,5 @@ import lombok.Data;
 public class CrearTareaEnfoqueRequest {
     private UUID practicanteId;
     private String titulo;
+    private Integer pomodorosEstimados;
 }

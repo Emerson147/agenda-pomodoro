@@ -50,4 +50,10 @@ public class CalendarioSiembraJpaEntity {
             inverseJoinColumns = @JoinColumn(name = "rutina_id")
     )
     private List<RutinaDiariaJpaEntity> rutinasDiarias;
+
+    @OneToMany(mappedBy = "calendario", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<ReflexionJpaEntity> reflexiones;
+
+    @Column(nullable = false, columnDefinition = "boolean default false")
+    private boolean diaCerrado = false;
 }

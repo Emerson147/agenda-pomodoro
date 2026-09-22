@@ -1,0 +1,1 @@
+ALTER TABLE planificaciones ADD COLUMN dia_cerrado BOOLEAN NOT NULL DEFAULT FALSE;

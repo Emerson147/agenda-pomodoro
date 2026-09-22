@@ -16,7 +16,8 @@ public class TareaEnfoqueController {
 
     @PostMapping
     public ResponseEntity<?> crear(@RequestBody CrearTareaEnfoqueRequest req) {
-        return ResponseEntity.ok(crearUseCase.ejecutar(req.getPracticanteId(), req.getTitulo()));
+        int estimacion = req.getPomodorosEstimados() != null ? req.getPomodorosEstimados() : 1;
+        return ResponseEntity.ok(crearUseCase.ejecutar(req.getPracticanteId(), req.getTitulo(), estimacion));
     }
 
 

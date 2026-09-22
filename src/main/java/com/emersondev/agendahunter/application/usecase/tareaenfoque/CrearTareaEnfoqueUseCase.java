@@ -9,8 +9,8 @@ import java.util.UUID;
 public class CrearTareaEnfoqueUseCase {
     private final TareaEnfoqueRepository repository;
 
-    public TareaEnfoque ejecutar(UUID practicanteId, String titulo) {
-        TareaEnfoque tarea = new TareaEnfoque(UUID.randomUUID(), practicanteId, titulo, false, new ArrayList<>(), null, null);
+    public TareaEnfoque ejecutar(UUID practicanteId, String titulo, int pomodorosEstimados) {
+        TareaEnfoque tarea = new TareaEnfoque(UUID.randomUUID(), practicanteId, titulo, false, pomodorosEstimados, new ArrayList<>(), null, null);
         repository.guardar(tarea);
         return tarea;
     }

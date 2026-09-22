@@ -7,11 +7,22 @@ import com.emersondev.agendahunter.application.usecase.recordatorio.*;
 import com.emersondev.agendahunter.application.usecase.rutinadiaria.*;
 import com.emersondev.agendahunter.application.usecase.tareaenfoque.*;
 import com.emersondev.agendahunter.domain.repository.*;
+import com.emersondev.agendahunter.domain.service.GeneradorPreguntasDiario;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class UseCaseConfig {
+
+    @Bean
+    public GeneradorPreguntasDiario generadorPreguntasDiario() {
+        return new GeneradorPreguntasDiario();
+    }
+
+    @Bean
+    public ObtenerPreguntasCierreUseCase obtenerPreguntasCierreUseCase(GeneradorPreguntasDiario generadorPreguntasDiario) {
+        return new ObtenerPreguntasCierreUseCase(generadorPreguntasDiario);
+    }
 
     // Idea Use Cases
     @Bean

@@ -14,15 +14,17 @@ public class TareaEnfoque {
     private UUID practicanteId;
     private String titulo;
     private boolean completado;
+    private int pomodorosEstimados;
     private List<CicloEnfoque> ciclos;
     private String faseDia;
     private String horaProgramada;
 
-    public TareaEnfoque(UUID id, UUID practicanteId, String titulo, boolean completado, List<CicloEnfoque> ciclos, String faseDia, String horaProgramada) {
+    public TareaEnfoque(UUID id, UUID practicanteId, String titulo, boolean completado, int pomodorosEstimados, List<CicloEnfoque> ciclos, String faseDia, String horaProgramada) {
         this.id = id != null ? id : UUID.randomUUID();
         this.practicanteId = practicanteId;
         this.titulo = titulo;
         this.completado = completado;
+        this.pomodorosEstimados = pomodorosEstimados;
         this.ciclos = ciclos != null ? ciclos : new ArrayList<>();
         this.faseDia = faseDia;
         this.horaProgramada = horaProgramada;

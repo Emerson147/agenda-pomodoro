@@ -9,4 +9,6 @@ public class AgendaItemDTO {
     private boolean completado;
     private String faseDia;
     private String horaProgramada;
+    private Integer pomodorosEstimados;
+    private Integer pomodorosReales;
 }
